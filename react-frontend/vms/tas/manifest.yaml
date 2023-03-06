@@ -1,0 +1,9 @@
+---
+applications:
+- name: react-frontend
+  buildpacks:
+  - nginx_buildpack
+  processes:
+  - type: web
+    instances: 1
+    memory: 256M
