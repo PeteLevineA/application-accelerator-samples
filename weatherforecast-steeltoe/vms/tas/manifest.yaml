@@ -1,0 +1,9 @@
+---
+applications:
+- name: weatherforecast-steeltoe
+  buildpacks:
+    - dotnet_core_buildpack
+  processes:
+  - type: web
+    instances: 1
+    memory: 256M
