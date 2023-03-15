@@ -79,7 +79,7 @@ engine:
         with: "#applicationName"
     - type: RewritePath
       rewriteTo: "#filename"
-  - include: [ "vms/tas/manifest.yaml" ]
+  - include: [ "vms/tas/manifest.yaml", "vms/tas/buildpack.yml" ]
     condition: "#includeTas"
     chain:
     - type: ReplaceText
