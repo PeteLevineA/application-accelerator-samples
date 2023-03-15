@@ -1,7 +1,17 @@
-# Deploying on Tanzu Application Service
+### Deploying on Tanzu Application Service
 
-From `react-frontend/` source directory (NOT output of accelerator):
-1. Modify `nginx.conf` to include your backend URL for `location /api/`
-1. `❯ npm install --dev`
-1. `❯ npm run build`
-1. `❯ cf push -f ./vms/tas/manifest.yaml`
+Build React font-end assets locally. First, install the NPM packages needed to
+build the React app:
+```bash
+npm install --dev`
+```
+
+Then build the React app:
+```bash
+npm run build
+```
+
+Finally, deploy the nginx server and React app using the `cf` CLI:
+```bash
+cf push -f manifest.yaml
+```

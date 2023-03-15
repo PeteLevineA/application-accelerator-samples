@@ -15,9 +15,19 @@ accelerator:
       required: true
     - name: backendService
       inputType: text
-      defaultValue: "customer-profile-backend.namespace"
-      label: Hostname of the backend services app. If backend services are deployed to the same cluster then a local route can be used (e.g. <backend-app>.<namespace>).
+      defaultValue: "backend.example.com"
+      label: Hostname of the backend services app. For kubernetes deployments, a local route can be used (e.g. <backend-app>.<namespace>) if backend services are deployed to the same cluster.
       required: true
+    - name: includeTap
+      label: "Include TAP deployment resources?"
+      inputType: checkbox
+      dataType: boolean
+      defaultValue: true
+    - name: includeTas
+      label: "Include TAS deployment resources?"
+      inputType: checkbox
+      dataType: boolean
+      defaultValue: true
   imports:
     - name: tap-workload
 
@@ -25,25 +35,75 @@ engine:
   let:
     - name: backendServiceResourceName
       expression: '#backendService.toLowerCase()'
-  chain:
-    - applyTo: [ "nginx.conf", "package.json" ]
+  merge:
+    - include: [ "**" ]
+      exclude: [ "kubernetes/**", "vms/**", "catalog/**", "README.md" ]
+    - include:  [ "nginx.conf", "package.json" ]
       chain:
         - type: ReplaceText
           substitutions:
             - text: "http://backend"
               with: "'http://' + #backendServiceResourceName"
-
-    - applyTo: [ "README.md", "public/*.html", "public/*.json", "catalog/catalog-info.yaml", "config/workload.yaml" ]
+    - include: [ "public/*.html", "public/*.json" ]
       chain:
         - type: ReplaceText
           substitutions:
             - text: "react-frontend"
               with: "#artifactId"
-
-    - merge:
-      - type: InvokeFragment
-        reference: tap-workload
-      - include: [ "**" ]
-      onConflict: UseFirst
-
-    - type: Provenance
+    - include: [ "config/workload.yaml"]
+      chain:
+      - type: ReplaceText
+        substitutions:
+        - text: "react-frontend"
+          with: "#artifactId"
+      - type: RewritePath
+        rewriteTo: "'config/' + #filename"
+      - merge:
+          - type: InvokeFragment
+            reference: tap-workload
+          - include: [ "**" ]
+        onConflict: UseFirst
+    - include: [ "vms/tas/manifest.yaml" ]
+      condition: "#includeTas"
+      chain:
+      - type: ReplaceText
+        substitutions:
+        - text: "react-frontend"
+          with: "#artifactId"
+      - type: RewritePath
+        rewriteTo: "#filename"
+    - include: [ "catalog/catalog-info.yaml" ]
+      condition: "#includeTap"
+      chain:
+      - type: ReplaceText
+        substitutions:
+        - text: "react-frontend"
+          with: "#artifactId"
+    - name: README
+      type: Combo
+      onConflict: Append
+      merge:
+      - include: [ "README.md"]
+        chain:
+        - type: ReplaceText
+          substitutions:
+          - text: "react-frontend"
+            with: "#artifactId"
+      - include: [ "kubernetes/tap/DEPLOYING.md" ]
+        condition: "#includeTap"
+        chain:
+        - type: ReplaceText
+          substitutions:
+          - text: "react-frontend"
+            with: "#artifactId"
+        - type: RewritePath
+          rewriteTo: "'README.md'"
+      - include: [ "vms/tas/DEPLOYING.md" ]
+        condition: "#includeTas"
+        chain:
+        - type: ReplaceText
+          substitutions:
+          - text: "react-frontend"
+            with: "#artifactId"
+        - type: RewritePath
+          rewriteTo: "'README.md'"
