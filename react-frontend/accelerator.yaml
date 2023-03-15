@@ -67,6 +67,15 @@ engine:
           with: "#artifactId"
       - type: RewritePath
         rewriteTo: "#filename"
+    - include:  [ "nginx.conf" ]
+      condition: "#includeTas"
+      chain:
+        - type: ReplaceText
+          substitutions:
+            - text: "8080"
+              with: "{{port}}"
+            - text: "/workspace/build"
+              with: "build"
     - include: [ "catalog/catalog-info.yaml" ]
       condition: "#includeTap"
       chain:
