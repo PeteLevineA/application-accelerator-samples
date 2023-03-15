@@ -10,7 +10,7 @@ Deploy the JAR on TAS using the `cf` CLI:
 cf push -p ./target/hello-fun-0.0.1-SNAPSHOT.jar -f manifest.yaml`
 ```
 
-### Accessing on Tanzu Application Service
+### Accessing the App Pushed to Tanzu Application Service
 
 Determine the URL to use to access the app by running:
 
