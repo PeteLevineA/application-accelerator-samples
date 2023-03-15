@@ -1,6 +1,6 @@
 ---
 applications:
-- name: weatherforecast-steeltoe
+- name: sample-app
   random-route: true
   processes:
   - type: web
