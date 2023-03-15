@@ -1,8 +1,7 @@
 ---
 applications:
 - name: weatherforecast-steeltoe
-  buildpacks:
-    - dotnet_core_buildpack
+  random-route: true
   processes:
   - type: web
     instances: 1
