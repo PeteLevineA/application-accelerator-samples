@@ -8,11 +8,6 @@ accelerator:
     - tanzu
 
   options:
-    - name: artifactId
-      inputType: text
-      defaultValue: "react-frontend"
-      label: Application artifact name
-      required: true
     - name: backendService
       inputType: text
       defaultValue: "backend.example.com"
