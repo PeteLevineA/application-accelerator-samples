@@ -100,7 +100,7 @@ engine:
       - text: Sample
         with: "#applicationName"
     - type: RewritePath
-      rewriteTo: "manifest.yaml"
+      rewriteTo: "'manifest.yaml'"
   - include: [ "catalog/catalog-info.yaml" ]
     condition: "#includeTap"
     chain:
