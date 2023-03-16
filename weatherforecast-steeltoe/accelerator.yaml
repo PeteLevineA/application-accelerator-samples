@@ -79,7 +79,7 @@ engine:
         with: "#applicationName"
     - type: RewritePath
       rewriteTo: "#filename"
-  - include: [ "vms/tas/manifest.yaml", "vms/tas/buildpack.yml" ]
+  - include: [ "vms/tas/buildpack.yml" ]
     condition: "#includeTas"
     chain:
     - type: ReplaceText
@@ -90,6 +90,17 @@ engine:
         with: "#applicationName"
     - type: RewritePath
       rewriteTo: "#filename"
+  - include: [ "vms/tas/tas-config.yaml" ]
+    condition: "#includeTas"
+    chain:
+    - type: ReplaceText
+      substitutions:
+      - text: sample-app
+        with: "#artifactId.toLowerCase()"
+      - text: Sample
+        with: "#applicationName"
+    - type: RewritePath
+      rewriteTo: "manifest.yaml"
   - include: [ "catalog/catalog-info.yaml" ]
     condition: "#includeTap"
     chain:

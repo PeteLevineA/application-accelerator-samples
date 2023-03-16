@@ -47,7 +47,7 @@ engine:
             reference: tap-workload
           - include: [ "**" ]
         onConflict: UseFirst
-    - include: [ "vms/tas/manifest.yaml" ]
+    - include: [ "vms/tas/tas-config.yaml" ]
       condition: "#includeTas"
       chain:
       - type: ReplaceText
@@ -55,7 +55,7 @@ engine:
         - text: node-express
           with: "#artifactId"
       - type: RewritePath
-        rewriteTo: "#filename"
+        rewriteTo: "manifest.yaml"
     - include: [ "catalog/catalog-info.yaml" ]
       condition: "#includeTap"
       chain:

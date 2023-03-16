@@ -97,7 +97,7 @@ engine:
     chain:
     - type: RewritePath
       rewriteTo: "#filename"
-  - include: [ "vms/tas/manifest.yaml" ]
+  - include: [ "vms/tas/tas-config.yaml" ]
     condition: "#deploymentType == 'tas'"
     chain:
     - type: ReplaceText
@@ -105,7 +105,7 @@ engine:
       - text: ": hello-fun"
         with: "': ' + #artifactId"
     - type: RewritePath
-      rewriteTo: "#filename"
+      rewriteTo: "manifest.yaml"
   - include: [ "catalog/*.yaml" ]
     condition: "#deploymentType != 'none'"
     chain:
