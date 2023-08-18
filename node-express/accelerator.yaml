@@ -57,7 +57,6 @@ engine:
       - type: RewritePath
         rewriteTo: "'manifest.yaml'"
     - include: [ "catalog/catalog-info.yaml" ]
-      condition: "#includeTap"
       chain:
       - type: ReplaceText
         substitutions:
