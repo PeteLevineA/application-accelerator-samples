@@ -1,0 +1,21 @@
+kind: Fragment
+apiVersion: 'entity.accelerator.apps.tanzu.vmware.com/v1alpha1'
+metadata:
+  name: "build-wrapper-maven"
+  title: "Maven Wrapper Fragment"
+  description: "Fragment to add a Maven build wrapper."
+spec:
+  accelerator:
+    displayName: Add Maven build tool wrapper
+
+    options:
+      - name: includeBuildToolWrapper
+        inputType: checkbox
+        label: Include Maven Wrapper build tool
+        dataType: boolean
+        defaultValue: true
+
+  engine:
+    merge:
+      - condition: "#includeBuildToolWrapper"
+        include: [ "mvnw", "mvnw.cmd", ".mvn/**" ]
