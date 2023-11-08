@@ -29,54 +29,54 @@ spec:
   imports:
     - name: tap-workload
 
-engine:
-  merge:
-    - include: ["**"]
-      exclude:
-        ["package.json", "config/**", "catalog/**", "README.md", "DEPLOYING.md"]
-    - include: ["package.json"]
-      chain:
-        - type: ReplaceText
-          substitutions:
-            - text: node-express
-              with: "#artifactId"
-    - include: ["config/workload.yaml"]
-      condition: "#includeTap"
-      chain:
-        - type: ReplaceText
-          substitutions:
-            - text: node-express
-              with: "#artifactId"
-        - merge:
-            - type: InvokeFragment
-              reference: tap-workload
-            - include: ["**"]
-          onConflict: UseFirst
-    - include: ["catalog/catalog-info.yaml"]
-      condition: "#includeTap"
-      chain:
-        - type: ReplaceText
-          substitutions:
-            - text: node-express
-              with: "#artifactId"
-    - name: README
-      type: Combo
-      onConflict: Append
-      merge:
-        - include: ["README.md"]
-          chain:
-            - type: ReplaceText
-              substitutions:
-                - text: node-express
-                  with: "#artifactId"
-        - include: ["DEPLOYING.md"]
-          condition: "#includeTap"
-          chain:
-            - type: ReplaceText
-              substitutions:
-                - text: node-express
-                  with: "#artifactId"
-            - type: RewritePath
-              rewriteTo: "'README.md'"
+  engine:
+    merge:
+      - include: ["**"]
+        exclude:
+          ["package.json", "config/**", "catalog/**", "README.md", "DEPLOYING.md"]
+      - include: ["package.json"]
+        chain:
+          - type: ReplaceText
+            substitutions:
+              - text: node-express
+                with: "#artifactId"
+      - include: ["config/workload.yaml"]
+        condition: "#includeTap"
+        chain:
+          - type: ReplaceText
+            substitutions:
+              - text: node-express
+                with: "#artifactId"
+          - merge:
+              - type: InvokeFragment
+                reference: tap-workload
+              - include: ["**"]
+            onConflict: UseFirst
+      - include: ["catalog/catalog-info.yaml"]
+        condition: "#includeTap"
+        chain:
+          - type: ReplaceText
+            substitutions:
+              - text: node-express
+                with: "#artifactId"
+      - name: README
+        type: Combo
+        onConflict: Append
+        merge:
+          - include: ["README.md"]
+            chain:
+              - type: ReplaceText
+                substitutions:
+                  - text: node-express
+                    with: "#artifactId"
+          - include: ["DEPLOYING.md"]
+            condition: "#includeTap"
+            chain:
+              - type: ReplaceText
+                substitutions:
+                  - text: node-express
+                    with: "#artifactId"
+              - type: RewritePath
+                rewriteTo: "'README.md'"
 
-    - type: Provenance
+      - type: Provenance
